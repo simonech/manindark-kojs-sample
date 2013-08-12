@@ -33,9 +33,9 @@
 <tbody data-bind="foreach: inventoryTable">
 	<tr>
 			<td data-bind="text: $index()+1"></td>
-			<td data-bind="if: $data[0]().hasContent, style: { background: $data[0]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[0]().value">/<b data-bind="text: $data[0]().numericValue"></b></td>
-			<td data-bind="if: $data[1]().hasContent, style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[1]().value"></span>/<b data-bind="text: $data[1]().numericValue"></b></td>
-			<td data-bind="if: $data[2]().hasContent, style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"> <input  type="text" data-bind="value: $data[2]().numericValue"></b></td>
+			<td data-bind="if: $data[0]().hasContent, style: { background: $data[0]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[0]().value, valueUpdate: 'afterkeydown'">/<b data-bind="text: $data[0]().numericValue"></b></td>
+			<td data-bind="if: $data[1]().hasContent, style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[1]().value, valueUpdate: 'afterkeydown'"></span>/<b data-bind="text: $data[1]().numericValue"></b></td>
+			<td data-bind="if: $data[2]().hasContent, style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"> <input  type="text" data-bind="value: $data[2]().numericValue, valueUpdate: 'afterkeydown'"></b></td>
 	</tr>
 </tbody>
 <tfoot>
