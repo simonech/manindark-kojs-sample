@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Cache postion calculator</title>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+<script type="text/javascript" src="js/viewmodel.js"></script>
+</head>
+<body>
+
+<table border=1>
+	<thead>
+		<th>
+			<td>Col 1</td>
+			<td>Col 2</td>
+			<td>Col 3</td>
+		</th>
+</thead>
+<tbody data-bind="foreach: inventoryTable">
+	<tr>
+			<td data-bind="text: $index()+1"></td>
+			<td data-bind="style: { background: $data[0]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[0]().value, style: { background: $data[0]().hasContent() ? 'white' : 'grey' }">/<b data-bind="text: $data[0]().numericValue"></b></td>
+			<td data-bind="style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[1]().value, style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"></span>/<b data-bind="text: $data[1]().numericValue"></b></td>
+			<td data-bind="style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"> <input  type="text" data-bind="value: $data[2]().numericValue, style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"></b></td>
+	</tr>
+</tbody>
+<tfoot>
+</tfoot>
+		<th>
+			<td data-bind="text: SumCol1">Col 1</td>
+			<td data-bind="text: SumCol2">Col 1</td>
+			<td data-bind="text: SumCol3">Col 1</td>
+		</th>
+</table>
+
+
+
+<script type="text/javascript">
+    ko.applyBindings(new CachePostionViewModel());
+</script>
+
+</body>
+</html>
