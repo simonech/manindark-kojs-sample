@@ -5,9 +5,23 @@
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
 <script type="text/javascript" src="js/viewmodel.js"></script>
+<script type="text/javascript" src="js/kobindings.js"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-SQodAdUt_v6EsBX4N2DHgKSoyTbsq6g&sensor=false">
+    </script>
+
+<script>
+    </script>
+
+    <style type="text/css">
+      #map-canvas { height: 300px; width:300px; }
+    </style>
+
 </head>
 <body>
 
+
+<div style="float:left">
 <table border=1>
 	<thead>
 		<th>
@@ -19,9 +33,9 @@
 <tbody data-bind="foreach: inventoryTable">
 	<tr>
 			<td data-bind="text: $index()+1"></td>
-			<td data-bind="style: { background: $data[0]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[0]().value, style: { background: $data[0]().hasContent() ? 'white' : 'grey' }">/<b data-bind="text: $data[0]().numericValue"></b></td>
-			<td data-bind="style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[1]().value, style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"></span>/<b data-bind="text: $data[1]().numericValue"></b></td>
-			<td data-bind="style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"> <input  type="text" data-bind="value: $data[2]().numericValue, style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"></b></td>
+			<td data-bind="if: $data[0]().hasContent, style: { background: $data[0]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[0]().value">/<b data-bind="text: $data[0]().numericValue"></b></td>
+			<td data-bind="if: $data[1]().hasContent, style: { background: $data[1]().hasContent() ? 'white' : 'grey' }"> <input type="text" data-bind="value: $data[1]().value"></span>/<b data-bind="text: $data[1]().numericValue"></b></td>
+			<td data-bind="if: $data[2]().hasContent, style: { background: $data[2]().hasContent() ? 'white' : 'grey' }"> <input  type="text" data-bind="value: $data[2]().numericValue"></b></td>
 	</tr>
 </tbody>
 <tfoot>
@@ -32,11 +46,52 @@
 			<td data-bind="text: SumCol3">Col 1</td>
 		</th>
 </table>
+</div>
 
+
+<div style="float:left; padding:10px">
+<h2>Results</h2>
+<ul>
+	<li>NORTH: <b data-bind="text: NorthCoord"></b> (<span data-bind="text: NorthDecCoord"></span>)
+		<ul>
+			<li>A - (R<sub>3</sub> + R<sub>9</sub>) = <span data-bind="text: NorthDeg"></span></li>
+			<li>(R<sub>16</sub> + R<sub>20</sub>) &times; 10 + R<sub>11</sub> = <span data-bind="text: NorthMin"></span></li>
+			<li>R<sub>3</sub> &times; 6 + A + B + R<sub>19</sub> + R<sub>12</sub> - R<sub>20</sub> = <span data-bind="text: NorthMinDec"></span></li>
+		</ul>
+	</li>
+
+	<li>EAST: <b data-bind="text: EastCoord"></b> (<span data-bind="text: EastDecCoord"></span>)
+		<ul>
+			<li>R<sub>3</sub> + R<sub>14</sub> = <span data-bind="text: EastDeg"></span></li>
+			<li>R<sub>5</sub> + R<sub>6</sub> = <span data-bind="text: EastMin"></span></li>
+			<li>C &times; R<sub>10</sub> + R<sub>19</sub> + R<sub>11</sub> + R<sub>2</sub> + R<sub>4</sub> + R<sub>10</sub> + R<sub>22</sub> = <span data-bind="text: EastMinDec"></span></li>
+		</ul>
+	</li>
+</ul>
+
+<div data-bind="gMap: {Lat: NorthDecCoord, Long: EastDecCoord}" id="map-canvas"></div>
+
+</div>
 
 
 <script type="text/javascript">
-    ko.applyBindings(new CachePostionViewModel());
+	var mv = new CachePostionViewModel();
+    
+	mv.NorthDecCoord.subscribe(function(oldValue) {
+		var coord = new google.maps.LatLng(mv.NorthDecCoord(),mv.EastDecCoord());
+	    map.setCenter(coord);
+	    marker.setPosition(coord);
+	});
+
+	mv.EastDecCoord.subscribe(function(oldValue) {
+		var coord = new google.maps.LatLng(mv.NorthDecCoord(),mv.EastDecCoord());
+	    map.setCenter(coord);
+	    marker.setPosition(coord);
+	});
+
+	ko.applyBindings(mv);
+	
+
 </script>
 
 </body>

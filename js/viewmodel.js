@@ -15,7 +15,56 @@ function CachePostionViewModel() {
 	self.SumCol3 = ko.computed(function() {
 		return sumCol(self.inventoryTable,2);
 	});
+
+	self.NorthDeg = ko.computed(function() {
+		return self.SumCol1() - (Row(self.inventoryTable,3) + Row(self.inventoryTable,9));
+	});
+
+	self.NorthMin = ko.computed(function() {
+		return (Row(self.inventoryTable,16) + Row(self.inventoryTable,20))*10 + Row(self.inventoryTable,11);
+	});
+
+	self.NorthMinDec = ko.computed(function() {
+		return Row(self.inventoryTable,15) * 6 + self.SumCol1() + self.SumCol2() + Row(self.inventoryTable,19) + Row(self.inventoryTable,12) - Row(self.inventoryTable,20);
+	});
+
+	self.EastDeg = ko.computed(function() {
+		return Row(self.inventoryTable,3) + Row(self.inventoryTable,14);
+	});
+
+	self.EastMin = ko.computed(function() {
+		return Row(self.inventoryTable,5) + Row(self.inventoryTable,6);
+	});
+
+	self.EastMinDec = ko.computed(function() {
+		return self.SumCol3()*Row(self.inventoryTable,10) + Row(self.inventoryTable,19) + Row(self.inventoryTable,11) + Row(self.inventoryTable,2) + Row(self.inventoryTable,4) + Row(self.inventoryTable,10) + Row(self.inventoryTable,22);
+	});
+
+	self.NorthCoord = ko.computed(function() {
+		return "N "+ self.NorthDeg()+" "+self.NorthMin()+"."+self.NorthMinDec();
+	});
+
+	self.EastCoord = ko.computed(function() {
+		return "E "+ self.EastDeg()+" "+self.EastMin()+"."+self.EastMinDec();
+	});
+
+	self.NorthDecCoord = ko.computed(function() {
+		var minutes = new Number(self.NorthMin()+"."+self.NorthMinDec())
+		return self.NorthDeg()+minutes/60;
+	});
+
+	self.EastDecCoord = ko.computed(function() {
+		var minutes = new Number(self.EastMin()+"."+self.EastMinDec())
+		return self.EastDeg()+minutes/60;
+	});
 }
+
+function Row (table,rowNum){
+		for (var i = 0; i < table()[rowNum-1]().length; i++) {
+			if(table()[rowNum-1]()[i]().numericValue()!=undefined)
+				return table()[rowNum-1]()[i]().numericValue();
+		};
+	};
 
 function sumCol (table,col) {
 	var sum=0;
@@ -66,13 +115,18 @@ function InventoryTableCell (value) {
 
 	self.hasContent=ko.computed(function(){return self.value()!=undefined});
 
-	self.numericValue=ko.computed(function(){
-		if(self.value()!=undefined){
-			if(typeof self.value() == 'number')
-				return self.value();
-			else {
-				return _.indexOf(alphabet, self.value(), true)+1;
+	self.numericValue=ko.computed({
+		read: function() {
+			if(self.value()!=undefined){
+				if(typeof self.value() == 'number')
+					return self.value();
+				else {
+					return _.indexOf(alphabet, self.value(), true)+1;
+				}
 			}
+		},
+		write: function(value){
+			self.value((new Number(value)).valueOf());
 		}
 	});
 }
@@ -103,7 +157,7 @@ var inventory = [
 {
 	row:5,
 	col:1,
-	value:''
+	value:'T'
 },
 {
 	row:6,
