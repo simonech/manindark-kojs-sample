@@ -14,7 +14,7 @@
     </script>
 
     <style type="text/css">
-      #map-canvas { height: 300px; width:300px; }
+      #map-canvas { height: 400px; width:400px; }
     </style>
 
 </head>
@@ -76,22 +76,7 @@
 
 <script type="text/javascript">
 	var mv = new CachePostionViewModel();
-    
-	mv.NorthDecCoord.subscribe(function(oldValue) {
-		var coord = new google.maps.LatLng(mv.NorthDecCoord(),mv.EastDecCoord());
-	    map.setCenter(coord);
-	    marker.setPosition(coord);
-	});
-
-	mv.EastDecCoord.subscribe(function(oldValue) {
-		var coord = new google.maps.LatLng(mv.NorthDecCoord(),mv.EastDecCoord());
-	    map.setCenter(coord);
-	    marker.setPosition(coord);
-	});
-
 	ko.applyBindings(mv);
-	
-
 </script>
 
 </body>
