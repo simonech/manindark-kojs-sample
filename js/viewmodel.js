@@ -162,7 +162,7 @@ var inventory = [
 {
 	row:6,
 	col:3,
-	value:3
+	value:4
 },
 {
 	row:7,
@@ -182,7 +182,7 @@ var inventory = [
 {
 	row:10,
 	col:3,
-	value:7
+	value:3
 },
 {
 	row:11,
